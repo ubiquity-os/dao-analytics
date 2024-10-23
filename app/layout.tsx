@@ -43,7 +43,7 @@ export default function RootLayout({
         <body>
           <NavBar />
           <GridBackground>
-            <div className="fixed w-full border h-full">{children}</div>
+            <div className="fixed w-full h-full">{children}</div>
           </GridBackground>
           <Toaster />
         </body>

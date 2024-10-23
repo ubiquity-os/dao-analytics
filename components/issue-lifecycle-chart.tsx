@@ -9,22 +9,11 @@ import ms from "ms";
 
 const analysis = processData(staticData);
 
-const contributorsConfig = {
-  contributors: {
-    label: "Contributors",
-    color: "#60a5fa",
-  },
-} satisfies ChartConfig;
-
 const averageTimeConfig = {
   timeFromOpenToClose: {
     label: "Time (h)",
   },
 } satisfies ChartConfig;
-
-function formatTime(time: number | string) {
-  return;
-}
 
 function processData(data: typeof staticData) {
   const analytics: IssueAnalytics[] = [];
@@ -50,7 +39,7 @@ function processData(data: typeof staticData) {
   return analytics;
 }
 
-export function AverageTimeChart() {
+export function IssueLifeCycle() {
   const [selectedData, setSelectedData] = useState<IssueAnalytics | null>(null);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -233,11 +222,22 @@ function DetailLink({ label, url }: { label: string; url: string }) {
 }
 
 function Reactions({ reactions, labels }: { reactions: Record<string, number | string>; labels: string[] }) {
+  const reactionMap = {
+    eyes: "👀",
+    heart: "❤️",
+    hooray: "🎉",
+    laugh: "😆",
+    rocket: "🚀",
+    confused: "😕",
+    "+1": "👍",
+    "-1": "👎",
+  };
+
   return (
     <div className="flex space-x-4">
       {labels.map((label) => (
         <p key={label}>
-          {label}: {reactions[label] || 0}
+          {reactionMap[label as keyof typeof reactionMap]} {reactions[label] || 0}
         </p>
       ))}
     </div>
