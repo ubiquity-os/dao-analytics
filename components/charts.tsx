@@ -2,9 +2,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
 import { Bar, BarChart, XAxis, YAxis, ResponsiveContainer } from "recharts";
-import ms from "ms";
 import { staticData } from "@/app/data";
 import { IssueAnalytics } from "@/app/types/analytics";
+//@ts-expect-error - This is a type error
+import ms from "ms";
 
 const analysis = processData(staticData);
 
@@ -21,8 +22,8 @@ const averageTimeConfig = {
   },
 } satisfies ChartConfig;
 
-function formatTime(time: number) {
-  return ms(time, { long: true });
+function formatTime(time: number | string) {
+  return;
 }
 
 function processData(data: typeof staticData) {
@@ -50,10 +51,10 @@ function processData(data: typeof staticData) {
 }
 
 export function AverageTimeChart() {
-  const [selectedData, setSelectedData] = useState(null); // Store data for the clicked bar
-  const [isModalOpen, setModalOpen] = useState(false); // Control modal visibility
+  const [selectedData, setSelectedData] = useState<IssueAnalytics | null>(null);
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
-  const handleBarClick = (data) => {
+  const handleBarClick = (data: IssueAnalytics) => {
     setSelectedData(data);
     setModalOpen(true);
   };
@@ -64,7 +65,7 @@ export function AverageTimeChart() {
   };
 
   const keyboardNavigation = useCallback(
-    (event) => {
+    (event: KeyboardEvent) => {
       if (!isModalOpen) return;
 
       const currentIndex = selectedData ? analysis.findIndex((item) => item.pullRequest.node_id === selectedData.pullRequest.node_id) : -1;
@@ -109,7 +110,7 @@ export function AverageTimeChart() {
             <XAxis dataKey="issue" tickLine={true} tickMargin={10} axisLine={true} />
             <YAxis tickLine={false} tickMargin={10} axisLine={true} tickFormatter={(value) => `${(value / (1000 * 60 * 60 * 24)).toFixed(0)}d`} />
             <ChartTooltip
-              formatter={(value, name) => [formatTime(value), name === "timeFromOpenToClose" ? " to close the issue" : " to merge the PR"]}
+              formatter={(value, name) => [ms(value, { long: true }), name === "timeFromOpenToClose" ? " to close the issue" : " to merge the PR"]}
               content={<ChartTooltipContent />}
             />
             <ChartLegend content={<ChartLegendContent />} />
@@ -155,14 +156,20 @@ export function AverageTimeChart() {
               <Section title="Contributors">
                 <div className="flex justify-between">
                   <DetailItem label="PR Author" value={selectedData?.pullRequest?.user?.login} />
-                  <DetailItem label="Issue Author" value={selectedData?.issue?.user?.login} />
+                  <DetailItem label="Issue Author" value={selectedData?.issue?.user?.login || "None"} />
                 </div>
                 <DetailItem label="Issue Assignee" value={selectedData?.issue?.assignee?.login || "None"} />
               </Section>
 
               <Section title="Details">
-                <DetailItem label="Reviewers" value={selectedData?.pullRequest?.requested_reviewers.map((reviewer) => reviewer?.login)?.join(", ") || "None"} />
-                <DetailItem label="Labels" value={selectedData?.issue?.labels?.map((label) => label?.name)?.join(", ") || "None"} />
+                <DetailItem
+                  label="Reviewers"
+                  value={selectedData?.pullRequest?.requested_reviewers?.map((reviewer) => reviewer?.login)?.join(", ") || "None"}
+                />
+                <DetailItem
+                  label="Labels"
+                  value={selectedData?.issue?.labels?.map((label) => (typeof label === "string" ? label : label.name))?.join(", ") || "None"}
+                />
                 <div className="flex justify-between">
                   <DetailItem label="Active State" value={selectedData?.issue?.state || "N/A"} />
                   <DetailItem label="State Reason" value={selectedData?.issue?.state_reason || "N/A"} />
@@ -197,7 +204,7 @@ export function AverageTimeChart() {
   );
 }
 
-function Section({ title, children }) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="space-y-2">
       <h4 className="text-lg font-semibold text-gray-100">{title}</h4>
@@ -206,7 +213,7 @@ function Section({ title, children }) {
   );
 }
 
-function DetailItem({ label, value }) {
+function DetailItem({ label, value }: { label: string; value: string }) {
   return (
     <p>
       <strong>{label}:</strong> {value}
@@ -214,7 +221,7 @@ function DetailItem({ label, value }) {
   );
 }
 
-function DetailLink({ label, url }) {
+function DetailLink({ label, url }: { label: string; url: string }) {
   return (
     <p>
       <strong>{label}:</strong>{" "}
@@ -225,7 +232,7 @@ function DetailLink({ label, url }) {
   );
 }
 
-function Reactions({ reactions, labels }) {
+function Reactions({ reactions, labels }: { reactions: Record<string, number | string>; labels: string[] }) {
   return (
     <div className="flex space-x-4">
       {labels.map((label) => (
@@ -236,18 +243,3 @@ function Reactions({ reactions, labels }) {
     </div>
   );
 }
-// export function ContributorsChart() {
-//   return (
-//     <ChartContainer config={contributorsConfig} className="min-h-[300px] w-full">
-//       <ResponsiveContainer width="100%" height="100%">
-//         <BarChart data={contributorsData}>
-//           <XAxis dataKey="issue" tickLine={false} tickMargin={10} axisLine={false} />
-//           <YAxis tickLine={false} tickMargin={10} axisLine={false} />
-//           <ChartTooltip content={<ChartTooltipContent />} />
-//           <ChartLegend content={<ChartLegendContent />} />
-//           <Bar dataKey="contributors" fill={contributorsConfig.contributors.color} radius={4} />
-//         </BarChart>
-//       </ResponsiveContainer>
-//     </ChartContainer>
-//   );
-// }

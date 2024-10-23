@@ -1,9 +1,16 @@
+import { RestEndpointMethodTypes } from "@octokit/rest";
+
 export type AnalysisResults = Record<string, Record<string, Record<string, IssueAnalytics | null>>>;
 
 /**
  * Analytics for a given issue
  */
 export type IssueAnalytics = {
+    issue: RestEndpointMethodTypes["issues"]["get"]["response"]["data"];
+    pullRequest: RestEndpointMethodTypes["pulls"]["get"]["response"]["data"];
+    owner?: string;
+    repo?: string;
+    url?: string;
     /**
      *      when the task was first created to when it was closed
      */
