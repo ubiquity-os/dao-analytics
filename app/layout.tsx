@@ -5,24 +5,24 @@ import { NavBar } from "@/components/server/navbar";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 
-const UBIQUITY_REWARDS = "Ubiquity Rewards";
+const UBIQUITYOS_PARTNER_INSIGHTS = "UbiquityOS Partner Insights";
 
 export const metadata: Metadata = {
   title: "Ubiquity Rewards | Ubiquity DAO",
-  description: UBIQUITY_REWARDS,
+  description: UBIQUITYOS_PARTNER_INSIGHTS,
   robots: "index,follow",
   twitter: {
     card: "summary_large_image",
     creator: "@UbiquityDAO",
-    description: UBIQUITY_REWARDS,
-    title: UBIQUITY_REWARDS,
+    description: UBIQUITYOS_PARTNER_INSIGHTS,
+    title: UBIQUITYOS_PARTNER_INSIGHTS,
   },
   openGraph: {
-    description: UBIQUITY_REWARDS,
-    siteName: UBIQUITY_REWARDS,
-    title: UBIQUITY_REWARDS,
+    description: UBIQUITYOS_PARTNER_INSIGHTS,
+    siteName: UBIQUITYOS_PARTNER_INSIGHTS,
+    title: UBIQUITYOS_PARTNER_INSIGHTS,
     type: "website",
-    url: "https://pay.ubq.fi/",
+    url: "https://insights.ubq.fi/",
   },
 };
 
@@ -43,7 +43,7 @@ export default function RootLayout({
         <body>
           <NavBar />
           <GridBackground>
-            <div className="fixed w-full">{children}</div>
+            <div className="fixed w-full border h-full">{children}</div>
           </GridBackground>
           <Toaster />
         </body>
