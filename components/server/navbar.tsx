@@ -14,7 +14,7 @@ export async function NavBar() {
   const isUserLoggedIn = await isLoggedIn();
 
   return (
-    <header className="fixed top-0 z-40 w-full mt-4">
+    <header className="fixed top-0 z-10 w-full p-4">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <Link href="/" className="flex items-center space-x-2">
           <header className="hidden gap-6 md:flex">

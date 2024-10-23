@@ -1,4 +1,4 @@
-import { AverageTimeChart, ContributorsChart } from "@/components/charts";
+import { AverageTimeChart } from "@/components/charts";
 
 function Container({ children }: { children: React.ReactNode }) {
   return <div className="container mx-auto mt-24">{children}</div>;
@@ -13,10 +13,6 @@ function DataDisplay() {
           <div className="p-4 rounded shadow">
             <h2 className="text-xl font-semibold mb-4 text-center">Average Time to Close Issues</h2>
             <AverageTimeChart />
-          </div>
-          <div className="p-4 rounded shadow">
-            <h2 className="text-xl font-semibold mb-4 text-center">Contributors per Issue</h2>
-            <ContributorsChart />
           </div>
         </div>
       </Container>
