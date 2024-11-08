@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0 (2024-11-08)
+
+
+### Features
+
+* issue lifecycle chart ([da34035](https://github.com/ubq-testing/dao-analytics/commit/da34035cff10c7cb854610128d699c31d8309e44))
+
 ## 1.0.0 (2024-06-05)
 
 ### Features
